@@ -35,6 +35,24 @@ gem 'steam-condenser'
 
 gem 'json'
 
+group :development, :test do
+	gem 'rspec-rails'
+	gem 'capybara'
+	gem 'factory_girl_rails'
+	gem 'pry-rails'
+	gem 'pry'
+	gem 'pry-remote'
+	gem 'pry-stack_explorer'
+	gem 'pry-debugger'
+	# gem "spork-rails"
+end
+
+group :development do
+  gem "better_errors"
+  gem 'binding_of_caller'
+  gem 'meta_request'
+end
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
