@@ -33,6 +33,8 @@ gem 'zurb-foundation', '~> 4.0.0'
 gem 'sorcery'
 gem 'steam-condenser'
 
+gem 'json'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

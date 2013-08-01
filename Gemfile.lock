@@ -145,6 +145,7 @@ DEPENDENCIES
   compass-rails
   jbuilder (~> 1.2)
   jquery-rails
+  json
   pg
   rails (= 4.0.0)
   sass-rails (~> 4.0.0)
