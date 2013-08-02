@@ -21,19 +21,30 @@ namespace :steam do
 				d = DotaHeroes.new
 				d.name = p['name'].gsub('npc_dota_hero_','')
 				d.save
-
 			end
 		end
 
 		task :getmatchid => [:environment, :setapikey] do
 			matches = JSON.parse(WebApi.json('IDOTA2Match_570','GetMatchHistory',version = 1,params={:min_players=>10}))
 			matches = matches['result']['matches']
-			binding.pry
 			matches.each do |m|
 				d = Match.new
 				d.match_id = m['match_id']
 				d.save
 			end
 		end
+
+		task :getmatchdata => [:environment, :setapikey, :getmatchid] do
+			m_id = []
+			Match.all.each do |m|
+				data = JSON.parse(WebApi.json('IDOTA2MATCH_570','GetMatchDetails',version=1,params={:match_id=>m.match_id})) 
+				data = data['result']
+				if data['human_players'] == 10
+					m.data = data
+					m.save
+				end
+			end
+		end
+		
 	end
 end
