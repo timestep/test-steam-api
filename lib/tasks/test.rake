@@ -46,5 +46,13 @@ namespace :steam do
 			end
 		end
 		
+		task :getmatchdataseq => [:environment, :setapikey] do
+			data = WebApi.json!('IDOTA2Match_570','GetMatchHistoryBySequenceNum',version = 1,params={:matches_requested=>100})
+			#can only request 100 matches at once.
+			# start_at_match_seq_num(seq#) 
+			# sequence number: data[:matches][#][:match_seq_num
+			
+		end	
+
 	end
 end
