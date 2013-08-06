@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20130806160046) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "numMatches"
+    t.integer  "numMatches", default: 0
   end
 
   create_table "matches", force: true do |t|
