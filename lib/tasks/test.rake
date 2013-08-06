@@ -81,12 +81,12 @@ namespace :steam do
 		end	
 		task :feedhero  => [:environment] do
 			Match.all.each do |m|
-				puts 'in match #{m.id}'
+				puts "in match #{m.id}"
 				m.data[:players].each do |p|
-					puts 'lookiing at player #{p[:player_slot]}'
+					puts "lookiing at player #{p[:player_slot]}"
 					heroData = DotaHeroes.find_by_id(p[:hero_id])
 					heroData.numMatches += 1
-					puts 'hero now has #{heroData.numMatches} matches played'
+					puts "hero now has #{heroData.numMatches} matches played"
 					heroData.save
 				end
 			end

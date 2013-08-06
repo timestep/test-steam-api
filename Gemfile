@@ -35,6 +35,8 @@ gem 'steam-condenser'
 
 gem 'json'
 
+gem 'database_cleaner'
+
 group :development, :test do
 	gem 'rspec-rails'
 	gem 'capybara'
