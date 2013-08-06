@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130802004826) do
+ActiveRecord::Schema.define(version: 20130806160046) do
 
   create_table "dota_heroes", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "numMatches"
   end
 
   create_table "matches", force: true do |t|
