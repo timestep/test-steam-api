@@ -52,7 +52,6 @@ namespace :steam do
 		end
 		
 		task :getmatchdataseq => [:environment,:cleardb, :setapikey] do
-
 			nextMatch = 0
 			while true
 				puts "Getting API Data"
@@ -83,7 +82,9 @@ namespace :steam do
 		task :feedhero do => [:environment]
 			Match.all.each do |m|
 				m.data[:players].each do |p|
-					
+					heroData = DotaHeroes.find_by_id(p[:hero_id])
+					heroData.numMatches += 1
+					heroData.save
 				end
 			end
 		end
