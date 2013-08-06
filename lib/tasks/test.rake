@@ -8,6 +8,11 @@ end
 
 namespace :steam do 
 	namespace :dota2 do 
+		task :cleardb => :environment do
+			puts "Destroying DB"
+			Match.destroy_all
+			puts "Matches Cleared"
+		end
 
 		task :setapikey => :environment do
 			WebApi.api_key = User.first.steamapikey
@@ -46,13 +51,55 @@ namespace :steam do
 			end
 		end
 		
-		task :getmatchdataseq => [:environment, :setapikey] do
-			data = WebApi.json!('IDOTA2Match_570','GetMatchHistoryBySequenceNum',version = 1,params={:matches_requested=>100})
-			#can only request 100 matches at once.
-			# start_at_match_seq_num(seq#) 
-			# sequence number: data[:matches][#][:match_seq_num
-			
-		end	
+		task :getmatchdataseq => [:environment,:cleardb, :setapikey] do
 
+			nextMatch = 0
+			while true
+				puts "Getting API Data"
+				data = getSeqMatchData(nextMatch)
+				puts "Validating Api Data"
+	
+				if data[:status] == 1
+					puts "Rearraging Data"
+					data = data[:matches]
+					puts "Beinning Loop"
+					data.each do |d|
+						puts "Checking for 10 human_players"
+						if d[:human_players]==10
+							puts "Creating New Match"
+							m = Match.new
+							puts "Assigning Match #{d[:match_seq_num]} to data"
+							m.data = d
+							m.save
+							puts "Data saved to Match# #{m.id}"
+						end
+					end
+				end
+				puts "Finding last seq num of API data"
+				break if nextMatch == data.last[:match_seq_num]
+				nextMatch = data.last[:match_seq_num]
+			end	
+		end	
+		task :feedhero do => [:environment]
+			Match.all.each do |m|
+				m.data[:players].each do |p|
+					
+				end
+			end
+		end
 	end
 end
+
+private 
+
+def getSeqMatchData(startMatchId=0)
+	data = WebApi.json!('IDOTA2Match_570',
+				'GetMatchHistoryBySequenceNum',
+				version = 1,params={
+					:matches_requested=>100,
+					:player=>10, 
+					:start_at_match_seq_num => startMatchId
+					})
+	return data
+end
+
